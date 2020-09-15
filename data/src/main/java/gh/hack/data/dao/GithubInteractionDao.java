@@ -1,10 +1,11 @@
 package gh.hack.data.dao;
 
+import io.vertx.core.Future;
 import org.springframework.stereotype.Component;
 
 @Component
 public interface GithubInteractionDao {
-    public void subscribe(String username, String repoToken, String bulbId) ;
+    public Future<Void> subscribe(String username, String repoToken, String bulbId) ;
 
-    public String getBulbId(String username, String repoToken);
+    public Future<String> getBulbId(String username, String repoToken);
 }
