@@ -26,16 +26,20 @@ public class EventListenService {
            if(handler.succeeded()) {
                List<String> bulbIds = handler.result();
                List<Future> glowBulbFutureList = new ArrayList<>();
-               for(String bulbId : bulbIds) {
-                   glowBulbFutureList.add(lifxApiCaller.glowBulb(bulbId));
-               }
-               CompositeFuture.all(glowBulbFutureList).setHandler(glowBulbFuturesHandler -> {
-                   if(glowBulbFuturesHandler.succeeded()) {
-                       future.complete();
-                   } else {
-                       future.fail(glowBulbFuturesHandler.cause());
+               if(bulbIds == null) {
+                   future.complete();
+               } else {
+                   for (String bulbId : bulbIds) {
+                       glowBulbFutureList.add(lifxApiCaller.glowBulb(bulbId));
                    }
-               });
+                   CompositeFuture.all(glowBulbFutureList).setHandler(glowBulbFuturesHandler -> {
+                       if (glowBulbFuturesHandler.succeeded()) {
+                           future.complete();
+                       } else {
+                           future.fail(glowBulbFuturesHandler.cause());
+                       }
+                   });
+               }
            } else {
                future.fail(handler.cause());
            }

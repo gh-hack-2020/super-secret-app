@@ -21,7 +21,6 @@ public class LifxApiCaller {
                 Vertx.vertx(),
                 new WebClientOptions()
                 .setDefaultHost("api.lifx.com")
-                .setSsl(true)
                 .setMaxPoolSize(30)
                 .setKeepAlive(true)
         );

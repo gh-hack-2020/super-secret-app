@@ -40,7 +40,7 @@ public class GithubInteractionMapImpl implements GithubInteractionDao {
     public Future<List<String>> getBulbId(String repoToken) {
         Future<List<String>> future = Future.future();
         Map<String, String> usernameBulbMap = mapDb.get(repoToken);
-        if(repoToken == null) {
+        if(usernameBulbMap == null) {
             future.complete(null);
         } else {
             List<String> bulbIds = new ArrayList<>();
