@@ -5,7 +5,9 @@ import io.vertx.core.Future;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -35,13 +37,17 @@ public class GithubInteractionMapImpl implements GithubInteractionDao {
     }
 
     @Override
-    public Future<String> getBulbId(String username, String repoToken) {
-        Future<String> future = Future.future();
+    public Future<List<String>> getBulbId(String repoToken) {
+        Future<List<String>> future = Future.future();
         Map<String, String> usernameBulbMap = mapDb.get(repoToken);
         if(repoToken == null) {
             future.complete(null);
         } else {
-            future.complete(usernameBulbMap.get(username));
+            List<String> bulbIds = new ArrayList<>();
+            for(String username : usernameBulbMap.keySet()) {
+                bulbIds.add(usernameBulbMap.get(username));
+            }
+            future.complete(bulbIds);
         }
 
         return  future;
