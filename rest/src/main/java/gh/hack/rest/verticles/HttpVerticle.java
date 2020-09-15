@@ -1,5 +1,7 @@
 package gh.hack.rest.verticles;
 
+import gh.hack.rest.handlers.EventListenHandler;
+import gh.hack.rest.handlers.GithubRepoSubsribeHandler;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
@@ -17,6 +19,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class HttpVerticle extends AbstractVerticle {
     private Logger logger = LoggerFactory.getLogger(HttpVerticle.class);
+
+    @Autowired
+    private GithubRepoSubsribeHandler githubRepoSubsribeHandler;
+
+    @Autowired
+    private EventListenHandler eventListenHandler;
 
 
     @Override
@@ -55,12 +63,22 @@ public class HttpVerticle extends AbstractVerticle {
         Router router = Router.router(vertx);
         router.route().handler(BodyHandler.create());
         getHealthCheck(router);
+        subscribeToRepo(router);
+        getEventFromGithubAction(router);
         return router;
     }
 
     private void getHealthCheck(Router router) {
         router.get("/health").handler(routingContext -> routingContext.response().setStatusCode(HttpResponseStatus.
                 OK.code()).end("{\"health\":\"true\"}"));
+    }
+
+    private void subscribeToRepo(Router router) {
+        router.post("/github/subscribe").handler(githubRepoSubsribeHandler);
+    }
+
+    private  void getEventFromGithubAction(Router router) {
+        router.get("/github/event").handler(eventListenHandler);
     }
 
 }
