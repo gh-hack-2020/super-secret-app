@@ -19,22 +19,22 @@ public class EventListenService {
     @Autowired
     private LifxApiCaller lifxApiCaller;
 
-    public Future<Void> consumeEvent(String repoId) {
-        Future<Void> future = Future.future();
+    public Future<List<String>> consumeEvent(String repoId) {
+        Future<List<String>> future = Future.future();
 
         githubInteractionDao.getBulbId(repoId).setHandler(handler -> {
            if(handler.succeeded()) {
                List<String> bulbIds = handler.result();
                List<Future> glowBulbFutureList = new ArrayList<>();
                if(bulbIds == null) {
-                   future.complete();
+                   future.complete(new ArrayList<>());
                } else {
                    for (String bulbId : bulbIds) {
                        glowBulbFutureList.add(lifxApiCaller.glowBulb(bulbId));
                    }
                    CompositeFuture.all(glowBulbFutureList).setHandler(glowBulbFuturesHandler -> {
                        if (glowBulbFuturesHandler.succeeded()) {
-                           future.complete();
+                           future.complete(bulbIds);
                        } else {
                            future.fail(glowBulbFuturesHandler.cause());
                        }
