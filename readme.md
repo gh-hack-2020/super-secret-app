@@ -7,3 +7,5 @@ VM Options:  -Dapp.spring.properties.file=config/application.properties -Dvertx.
 Program Arguments: run com.indian.experiment.rest.verticles.MainVerticle -conf config/application-config.json
 
 Module: rest
+
+For Dev hack : https://dev.to/devteam/announcing-the-github-actions-hackathon-on-dev-3ljn
