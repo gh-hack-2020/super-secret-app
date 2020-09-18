@@ -8,5 +8,5 @@ Program Arguments: run gh.hack.rest.verticles.MainVerticle -conf config/applicat
 
 Module: rest
 
-For Dev hackathon
-https://dev.to/devteam/announcing-the-github-actions-hackathon-on-dev-3ljn
+For Dev hack : https://dev.to/devteam/announcing-the-github-actions-hackathon-on-dev-3ljn
+
